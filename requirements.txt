@@ -2,4 +2,3 @@ openai
 streamlit
 asyncio
 agents
-tensorflow
