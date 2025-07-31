@@ -54,9 +54,10 @@ if right.button("enter"):
     time.sleep(1)
     success.empty()
 
-response_placeholder = st.empty()
 
 if st.button("Generate Tasks"):
+    response_placeholder = st.empty()
+
     with st.spinner("Generating tasks..."):
         agent_n = int(agent_select[0]) - 1
 
