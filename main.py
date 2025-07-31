@@ -9,15 +9,31 @@ from agents import Agent, Runner
 OPENAI_API_KEY = os.environ.get("OPENAI_API_KEY")
 agent_task_help = Agent(
     name="Task Help",
-    instructions="""Use the list of applications to help complete the users, request. 
-                    RESPOND WITH LONGFORM STEP BY STEP MARKDOWN INSTRUCTIONS ON WHAT APPS TO USE, TRY TO MENTION MULTIPLE APPS""",
+    instructions="""Use the provided list of applications to help fulfill the user's request. 
+                    Respond with detailed, longform, step-by-step instructions in Markdown format that explain which 
+                    apps to use and how to use them. Try to incorporate multiple relevant apps in the response whenever possible.
+
+                    Requirements:
+                    - Format the entire response using Markdown.
+                    - Provide clear, step-by-step instructions.
+                    - Mention multiple apps from the list when appropriate.
+                    - Use headings (e.g., ## Step 1) and bold app names for readability.
+                    - Include short descriptions of what each app does and why it's being used.
+                    - Ensure the final instructions are logical, easy to follow, and fully address the user's task.
+                    """,
 )
 
 agent_app_help = Agent(
     name="App help",
-    instructions="""Use the list of applications to help complete the users, request. 
-                    Respond with information about the users app folder, or any questions about an individual app.
-                     USE MARKDOWN""",
+    instructions="""Use the provided list of applications to fulfill the user's request.
+                    Respond with relevant information about the user's app folder.
+
+                    Requirements:
+                        Format all responses using Markdown.
+                        Include app names in bold.
+                        If listing multiple apps, use a bulleted list.
+                        Use known details and instructions about specific apps.
+                        Keep responses concise and informative.""",
 )
 
 agents = [agent_task_help,agent_app_help]
@@ -40,7 +56,7 @@ user_input = st.text_area("Enter your prompt:", height=200)
 
 applications = os.listdir("/Applications")
 
-agent_select = st.selectbox("Choose question type",["1.  Question about Applications","2.  Help with task"],width=350)
+agent_select = st.selectbox("Choose question type",["1.  Help with task","2.  Question about Applications"],width=350)
 
 left, right = st.columns(2, vertical_alignment="bottom")
 key_input = left.text_input("optional OPEN_AI KEY")
@@ -55,10 +71,10 @@ if right.button("enter"):
     success.empty()
 
 
-if st.button("Generate Tasks"):
+if st.button("Submit Prompt"):
     response_placeholder = st.empty()
 
-    with st.spinner("Generating tasks..."):
+    with st.spinner("writing..."):
         agent_n = int(agent_select[0]) - 1
 
         response = run_async_task(f"Applications:{applications} User Instruction:{user_input}",agent_n)
