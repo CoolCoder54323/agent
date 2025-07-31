@@ -17,7 +17,7 @@ agent_task_help = Agent(
                     - Format the entire response using Markdown.
                     - Provide clear, step-by-step instructions.
                     - Mention multiple apps from the list when appropriate.
-                    - Use headings (e.g., ## Step 1) and bold app names for readability.
+                    - Use headings and bold app names for readability.
                     - Include short descriptions of what each app does and why it's being used.
                     - Ensure the final instructions are logical, easy to follow, and fully address the user's task.
                     """,
@@ -39,7 +39,6 @@ agent_app_help = Agent(
 agents = [agent_task_help,agent_app_help]
 
 async def generate_tasks(goal,agent):
-
     result = await Runner.run(agents[agent], goal)
     return result.final_output
 
@@ -63,12 +62,15 @@ key_input = left.text_input("optional OPEN_AI KEY")
 
 
 if right.button("enter"):
-    OPENAI_API_KEY = key_input
-    os.environ["OPENAI_API_KEY"] = key_input
-    success = st.success("Running with new key")
+    if key_input != "":
+        OPENAI_API_KEY = key_input
+        os.environ["OPENAI_API_KEY"] = key_input
+        success = st.success("Key Accepted")
+        time.sleep(1)
+        success.empty()
+    else:
+        fail = st.error("Empty Key")
 
-    time.sleep(1)
-    success.empty()
 
 
 response = ""
