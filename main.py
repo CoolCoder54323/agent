@@ -71,6 +71,7 @@ if right.button("enter"):
     success.empty()
 
 
+response = ""
 if st.button("Submit Prompt"):
     response_placeholder = st.empty()
 
@@ -81,5 +82,15 @@ if st.button("Submit Prompt"):
         success = st.success("Done!")
         time.sleep(1)
         success.empty()
-        response_placeholder.markdown(response)
+
+st.markdown(f"""
+<div style="background-color: black;
+padding: 20px;
+border-radius: 10px;
+opacity:50%;
+color:white;
+margin-bottom: 20px;">{response}</div>
+""", unsafe_allow_html=True)
+
+
 
